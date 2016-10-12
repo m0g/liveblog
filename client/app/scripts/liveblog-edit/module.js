@@ -11,8 +11,10 @@ import angular from 'angular';
 import _ from 'lodash';
 //import unreadPostsService from './unread.posts.service';
 
+import './../ng-sir-trevor';
+import './../ng-sir-trevor-blocks';
 //import 'ngsirtrevor/dist/ng-sir-trevor';
-import '../ng-sir-trevor-blocks';
+//import '../ng-sir-trevor-blocks';
 
 //define([
 //    'angular',
@@ -67,6 +69,7 @@ import '../ng-sir-trevor-blocks';
 
         // remove and clean every items from the editor
         function cleanEditor(actionDisabled) {
+            console.log('clean editor', actionDisabled);
             actionDisabled = (typeof actionDisabled === 'boolean') ? actionDisabled : true;
             vm.editor.reinitialize();
             $scope.actionDisabled = actionDisabled;
@@ -94,8 +97,17 @@ import '../ng-sir-trevor-blocks';
             sticky: false,
             highlight: false,
             filter: {isHighlight: false},
+            onEditorChanges: function() {
+                var input = $(this).text().trim();
+
+                $scope.$apply(function() {
+                    $scope.actionDisabled = _.isEmpty(input);
+                });
+            },
             actionStatus: function() {
+                //console.log('action status', $scope.actionDisabled, $scope.actionPending);
                 return $scope.actionDisabled || $scope.actionPending;
+                //return true;
             },
             askAndResetEditor: function() {
                 doOrAskBeforeIfEditorIsNotEmpty(cleanEditor);
@@ -193,6 +205,7 @@ import '../ng-sir-trevor-blocks';
             },
             stParams: {
                 disableSubmit: function(actionDisabled) {
+                    console.log('disable submit', actionDisabled);
                     $scope.actionDisabled = actionDisabled;
                     // because this is called outside of angular scope from sir-trevor.
                     if (!$scope.$$phase) {
@@ -278,6 +291,18 @@ import '../ng-sir-trevor-blocks';
                 $scope.preview = !$scope.preview;
             }
         });
+
+        //$('.st-text-block').on('keyup', function() {
+        //    console.log('monitoring changes');
+        //    var input = $(this).text().trim();
+
+        //    if (_.isEmpty(input)) {
+        //        vm.disableSubmit(true);
+        //        return false;
+        //    }
+        //    vm.disableSubmit(false);
+        //});
+
         // initalize the view with the editor panel
         $scope.openPanel(angular.isDefined($routeParams.panel)? $routeParams.panel : 'editor');
     }
