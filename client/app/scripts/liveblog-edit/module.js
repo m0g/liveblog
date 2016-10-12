@@ -33,7 +33,6 @@ import './../ng-sir-trevor-blocks';
     function BlogEditController(api, $q, $scope, blog, notify, gettext, session,
         upload, config, embedService, postsService, unreadPostsService, modal, blogService, $route, $routeParams, blogSecurityService, themesService) {
 
-            console.log('config', config);
         var vm = this;
         // @TODO: remove this when theme at blog level.
         // check the theme setting for comments.
