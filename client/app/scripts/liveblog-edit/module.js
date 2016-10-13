@@ -68,13 +68,14 @@ import './../ng-sir-trevor-blocks';
 
         // remove and clean every items from the editor
         function cleanEditor(actionDisabled) {
-            console.log('clean editor', actionDisabled);
             actionDisabled = (typeof actionDisabled === 'boolean') ? actionDisabled : true;
             vm.editor.reinitialize();
             $scope.actionDisabled = actionDisabled;
             $scope.currentPost = undefined;
             $scope.sticky = false;
             $scope.highlight = false;
+
+            $('.st-text-block').on('keyup', $scope.onEditorChanges);
         }
 
         // retieve the blog's public url
@@ -104,9 +105,7 @@ import './../ng-sir-trevor-blocks';
                 });
             },
             actionStatus: function() {
-                //console.log('action status', $scope.actionDisabled, $scope.actionPending);
                 return $scope.actionDisabled || $scope.actionPending;
-                //return true;
             },
             askAndResetEditor: function() {
                 doOrAskBeforeIfEditorIsNotEmpty(cleanEditor);

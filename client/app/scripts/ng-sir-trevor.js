@@ -85,6 +85,11 @@ export default angular
 
                 $('.st-text-block').on('keyup', scope.onChange);
 
+                //scope.$on('$destroy', function() {
+                //    console.log('Nuke it!');
+                //    $('.st-text-block').off('keyup', scope.onChange);
+                //});
+
                 // @TODO: investigate how to better `digest` out of $scope  variables.
                 //scope.$watchCollection('editor.blocks', function(blocks) {
                 //     var list = [];
