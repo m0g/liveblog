@@ -1,8 +1,8 @@
 var liveblogSyndication = angular
-    .module('liveblog.syndication', ['liveblog.security']);
+    .module('liveblog.syndication', ['liveblog.security', 'superdesk.menu']);
 
 liveblogSyndication
-    .config(['superdeskProvider', function(superdesk) {
+    .config(['superdeskProvider', '$provide', function(superdesk, $provide) {
         superdesk
             .activity('/consumers/', {
                 label: gettext('Consumers Management'),
@@ -20,8 +20,23 @@ liveblogSyndication
                 category: superdesk.MENU_MAIN,
                 priority: 100,
                 adminTools: true,
+                producersBlogs: true,
                 resolve: {isArchivedFilterSelected: function() {return false;}}
             });
+
+        //$provide.decorator('sdMenuWrapperDirective', function($delegate) {
+        //  var directive, link;
+        //  directive = $delegate[0];
+        //  link = directive.link;
+
+        //  directive.compile = function() {
+        //    return function Link(scope, element, attrs, ctrls) {
+        //      return link.apply(this, arguments);
+        //    };
+        //  };
+        //  return $delegate;
+        //});
+
     }])
     .config(['apiProvider', function(apiProvider) {
         apiProvider
