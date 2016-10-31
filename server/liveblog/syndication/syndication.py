@@ -1,6 +1,11 @@
+import logging
+from flask import current_app as app
 from superdesk.resource import Resource
 from superdesk.services import BaseService
 from .utils import generate_api_key
+
+
+logger = logging.getLogger('superdesk')
 
 
 syndication_out_schema = {
@@ -62,6 +67,20 @@ syndication_in_schema = {
 # TODO: on created, run celery task to fetch old blog posts.
 class SyndicationInService(BaseService):
     notification_key = 'syndication_in'
+
+    def is_syndicated(self, producer_id, producer_blog_id, consumer_blog_id):
+        cursor = app.data.mongo.pymongo(resource=self.datasource).db[self.datasource]
+        lookup = {'$and': [
+            {'producer_id': {'$eq': producer_id}},
+            {'blog_id': {'$eq': consumer_blog_id}},
+            {'producer_blog_id': {'$eq': producer_blog_id}}
+        ]}
+        logger.info('SyndicationIn.is_syndicated lookup: {}'.format(lookup))
+        collection = cursor.find(lookup)
+        if collection.count():
+            return True
+        else:
+            return False
 
 
 class SyndicationIn(Resource):
