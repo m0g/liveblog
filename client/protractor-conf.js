@@ -36,6 +36,9 @@ var config = {
     },
 
     capabilities: {
+        //browserName: "firefox",
+        //firefox_binary: "/opt/protractor-firefox/firefox",
+        //binary_: "/opt/protractor-firefox/firefox"
         browserName: 'chrome',
         chromeOptions: getChromeOptions()
     },
